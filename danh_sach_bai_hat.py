@@ -24,7 +24,6 @@ def songInfo(response):
     # loi_bai_hat
     loi_bai_hat = soup.select('#fulllyric')[0].get_text()
 
-    # convert to JSON string
     song_dic = {
         "title": ten_bai_hat,
         "singer": ten_ca_si,
@@ -39,7 +38,7 @@ def songInfo(response):
 def listSong():
     result = []
     # lay ra 10 bai hat
-    for x in range(0, 20):
+    for x in range(1, 21):
         url = 'https://chiasenhac.vn/nhac-hot/vietnam.html?playlist='
         response = requests.get(f'{url}' + str(x))
         # them link html
@@ -48,7 +47,7 @@ def listSong():
     return result
 
 
-# tim kiem nhac tren thanh tim kiem
+# hien thi cac bai hat theo song_search
 def searchSongByName(song_search):
     # lay ra 5 link html
     # links_html = [5]
@@ -56,14 +55,27 @@ def searchSongByName(song_search):
     response = requests.get(f'https://chiasenhac.vn/tim-kiem?q={song_search}')
     soup = BeautifulSoup(response.content, "html.parser")
     for i in range(1, 6):
-        link_html = soup.select(f'#nav-all > ul > li:nth-child({i}) > div.media-left.align-items-stretch.mr-2 > a')[0][
+        link_html = soup.select(f'#nav-all > ul > li:nth-child({i}) > .media-left.align-items-stretch.mr-2 > a')[0][
             'href']
         # them link html va tra ve inspect
-        response = requests.get(link_html)
-        song = songInfo(response)
+        title = soup.select(f'#nav-all > ul > li:nth-child({i}) > .media-left.align-items-stretch.mr-2 > a')[0][
+            'title']
+        image = soup.select(f'#nav-all > ul > li:nth-child({i}) > .media-left.align-items-stretch.mr-2 > a > img')[0][
+            'src']
+
+        author = soup.select(f'#nav-all > ul > li:nth-child({i}) > .media-body.align-items-stretch.d-flex.flex-column'
+                             f'.justify-content-between.p-0 > div > div')[0].get_text()
+
+        song = {
+            "link_html": link_html,
+            "title": title,
+            "image": image,
+            "author": author
+        }
+
         result.append(song)
 
     return result
 
 
-
+print(searchSongByName("waiting"))
