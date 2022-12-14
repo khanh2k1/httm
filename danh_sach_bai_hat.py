@@ -26,11 +26,11 @@ def songInfo(response):
 
     # convert to JSON string
     song_dic = {
-        "link": link,
-        "ten_ca_si": ten_ca_si,
-        "ten_bai_hat": ten_bai_hat,
-        "anh_bia": anh_bia,
-        "loi_bai_hat": loi_bai_hat
+        "title": ten_bai_hat,
+        "singer": ten_ca_si,
+        "img_cover": anh_bia,
+        "urlSong": link,
+        "lyric": loi_bai_hat
     }
 
     return song_dic
@@ -39,7 +39,7 @@ def songInfo(response):
 def listSong():
     result = []
     # lay ra 10 bai hat
-    for x in range(1, 11):
+    for x in range(0, 20):
         url = 'https://chiasenhac.vn/nhac-hot/vietnam.html?playlist='
         response = requests.get(f'{url}' + str(x))
         # them link html
@@ -53,7 +53,7 @@ def searchSongByName(song_search):
     # lay ra 5 link html
     # links_html = [5]
     result = []
-    response = requests.get(f'https://chiasenhac.vn/tim-kiem?q=' + str(song_search))
+    response = requests.get(f'https://chiasenhac.vn/tim-kiem?q={song_search}')
     soup = BeautifulSoup(response.content, "html.parser")
     for i in range(1, 6):
         link_html = soup.select(f'#nav-all > ul > li:nth-child({i}) > div.media-left.align-items-stretch.mr-2 > a')[0][

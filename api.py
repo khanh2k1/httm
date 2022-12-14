@@ -11,7 +11,7 @@ def findAll():
 
 
 @app.get("/api/song/{song_name}")
-async def findSong(song_name):
+async def findSong(song_name: str):
     result = searchSongByName(song_name)
     return result
 
